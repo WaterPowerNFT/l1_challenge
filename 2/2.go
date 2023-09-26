@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
 func CalcSquare(index int, value int64, ptr *[]int64) {
@@ -9,9 +10,13 @@ func CalcSquare(index int, value int64, ptr *[]int64) {
 }
 
 func main() {
+	var wg sync.WaitGroup
 	massive := []int64{2, 4, 6, 8, 10}
 	for i, j := range massive {
+		wg.Add(1)
 		go CalcSquare(i, j, &massive)
+		wg.Done()
 	}
+	wg.Wait()
 	fmt.Println(massive)
 }
