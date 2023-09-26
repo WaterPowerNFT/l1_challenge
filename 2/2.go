@@ -14,8 +14,10 @@ func main() {
 	massive := []int64{2, 4, 6, 8, 10}
 	for i, j := range massive {
 		wg.Add(1)
-		go CalcSquare(i, j, &massive)
-		wg.Done()
+		go func(i int, j int64) {
+			CalcSquare(i, j, &massive)
+			wg.Done()
+		}(i, j)
 	}
 	wg.Wait()
 	fmt.Println(massive)
